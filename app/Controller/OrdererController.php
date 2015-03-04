@@ -33,17 +33,33 @@ class OrdererController extends AppController {
         
         $dir = new Folder($json->folder);
         $files = $dir->findRecursive();
-        $final = [];
+        $films = [];
+        $series = [];
+        $musics = [];
+        $others = [];
         
         for($i = 0; $i < count($files); $i++){
             if(preg_match('#\.mkv$|\.avi$#', $files[$i])){
-                array_push($final, $files[$i]);
+                if(preg_match('#S[0-9]{1,2}E[0-9]{1,2}#', $files[$i])){
+                    array_push($series, $files[$i]);
+                }else{
+                    array_push($films, $files[$i]);
+                }                
+            }else if (preg_match('#\.mp3$|\.flac$#', $files[$i])){
+                array_push($musics, $files[$i]);
+            }else{
+                 array_push($others, $files[$i]);
             }
         }     
         
-        return $final;
+        $result = [$films, $series, $musics, $others];
+        
+       for($i = 0; $i < count($result); $i++){
+           $count = count($result[$i]);
+           
+           $result[$i] = [$result[$i], $count];
+       }
+        
+        return $result;
     }
-    
-    
-    
 }
