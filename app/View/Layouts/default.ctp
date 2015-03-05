@@ -27,10 +27,13 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>-->
-                        <a class="navbar-brand" href="/mediacenter">Mediacenter</a>
+                        <?= $this->Html->link('Mediacenter',array('controller' => 'pages', 'action' => 'home'),array('class' => 'navbar-brand'));?>
                     </div>                    
                     <div id="navbar" class="navbar-collapse collapse">
-                        <?php if ($this->Session->read('Auth.User')){ ?>                            
+                        <?php if ($this->Session->read('Auth.User')){ ?>     
+                            <div class="navbar_header">
+                                <?= $this->Html->link('Réglages',array('controller' => 'users', 'action' => 'settings'),array('class' => 'navbar-brand'));?>
+                            </div>
                             <div class="navbar-form navbar-right">
                                 <?= $this->Html->link('Déconnexion',array('controller' => 'users', 'action' => 'logout'),array('class' => 'form-control'));?>
                             </div>
@@ -48,15 +51,16 @@
             </div>	
         </section>
         
-        <footer>
+        <!--<footer>
             <p>Footer</p>
-        </footer>
+        </footer>-->
         
         <div id="scripts">        
             <?= $this->fetch('script'); ?>
             <?= $this->Html->script('jquery.min');?>
             <?= $this->Html->script('bootstrap.min');?>
-            <?= $this->Html->script('footer');?>
+            <?= $this->Html->script('header');?>
+            <?= $this->Html->script('showHide');?>
         </div>
     </body>
 </html>

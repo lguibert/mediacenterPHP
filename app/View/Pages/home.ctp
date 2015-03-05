@@ -1,58 +1,58 @@
-<div class='container'>
-    <h1><?= $countGlobal; ?></h1>
-    <div class='row'>
-        <h1>Films (<?= $films[1];?>):</h1>
-        <?php
-        foreach($films[0] as $file){
-            $ext = explode('.', $file);
-            ?>
-            <div class='col-md-2 files col-xs-2'>
-                <h5><?= end($ext); ?></h5>
-                <p><?= $file; ?></p>
-            </div>
+<div id="filesPresentation" class='container'>
+    <h1><?= $countGlobal; ?> fichiers</h1>
+    <div class='globals row'>
+        <h1 class="clickable">Films (<?= $movies[1];?>):</h1>
+        <div class="contains">
             <?php
-        } ?>
+            foreach($movies[0] as $file){
+                ?>
+                <div class='col-md-2 files col-xs-2'>
+                    <p><?= $file; ?></p>
+                </div>
+                <?php
+            } ?>
+        </div>
     </div>
     
-    <div class='row'>
-        <h1>Séries (<?= $series[1];?>):</h1>
-        <?php
-        foreach($series[0] as $file){
-            $ext = explode('.', $file);
-            ?>
-            <div class='col-md-2 files col-xs-2'>
-                <h5><?= end($ext); ?></h5>
-                <p><?= $file; ?></p>
-            </div>
+    <div class='globals row'>
+        <h1 class="clickable">Séries (<?= $series[1];?>):</h1>
+        <div class="contains">
             <?php
-        } ?>
+            foreach($series[0] as $file){
+                ?>
+                <div class='col-md-2 files col-xs-2'>
+                    <p><?= $file; ?></p>
+                </div>
+                <?php
+            } ?>
+        </div>
     </div>
     
-    <div class='row'>
-        <h1>Musiques (<?= $musics[1];?>):</h1>
-        <?php
-        foreach($musics[0] as $file){
-            $ext = explode('.', $file);
-            ?>
-            <div class='col-md-2 files col-xs-2'>
-                <h5><?= end($ext); ?></h5>
-                <p><?= $file; ?></p>
-            </div>
+    <div class='globals row'>
+        <h1 class="clickable">Musiques (<?= $musics[1];?>):</h1>
+        <div class="contains">
             <?php
-        } ?>
+            foreach($musics[0] as $file){
+                ?>
+                <div class='col-md-2 files col-xs-2'>
+                    <p><?= $file; ?></p>
+                </div>
+                <?php
+            } ?>
+        </div>
     </div>
     
-    <div class='row'>
-        <h1>Autres (<?= $others[1];?>):</h1>
-        <?php
-        foreach($others[0] as $file){
-            $ext = explode('.', $file);
-            ?>
-            <div class='col-md-2 files col-xs-2'>
-                <h5><?= end($ext); ?></h5>
-                <p><?= $file; ?></p>
-            </div>
+    <div class='globals row'>
+        <h1 class="clickable">Autres (<?= $others[1];?>):</h1>
+        <div class="contains">
             <?php
-        } ?>
+            foreach($others[0] as $file){
+                ?>
+                <div class='col-md-2 files col-xs-2'>
+                    <p><?= $file; ?></p>
+                </div>
+                <?php
+            } ?>
+        </div>
     </div>
 </div>

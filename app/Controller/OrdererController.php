@@ -1,7 +1,4 @@
 <?php
-App::uses('Folder', 'Utility');
-App::uses('File', 'Utility');
-
 class OrdererController extends AppController {    
     public function checkDateOrdering(){
         $json = $this->getSettings();
@@ -18,41 +15,32 @@ class OrdererController extends AppController {
         }
     }
     
-    public function getSettings(){
-        $dir = new Folder(WWW_ROOT . 'files');
-        $result = $dir->find('settings.json');            
-        $file = new File($dir->pwd() . DS . $result[0]);
-        $json = json_decode($file->read());
-        $file->close();
-        
-        return $json;
-    }
-    
     public function openFolder(){
         $json = $this->getSettings();
         
         $dir = new Folder($json->folder);
         $files = $dir->findRecursive();
-        $films = [];
-        $series = [];
-        $musics = [];
-        $others = [];
+        $movies = $series = $musics = $others = [];
+        
+        $videosPattern = $this->createSearchPattern($json->videoFormats);
+        $audioPattern = $this->createSearchPattern($json->audioFormats);
         
         for($i = 0; $i < count($files); $i++){
-            if(preg_match('#\.mkv$|\.avi$#', $files[$i])){
-                if(preg_match('#S[0-9]{1,2}E[0-9]{1,2}#', $files[$i])){
-                    array_push($series, $files[$i]);
+            $name = $this->deletePath($json->folder, $files[$i]);
+            if(preg_match($videosPattern, $name)){ //test fichier video
+                if(preg_match('#[Ss][0-9]{1,2}[Ee][0-9]{1,2}|[Ss]0[0-9]{1}|[Ss][0-9]{1,2} [EP][0-9]{1,2}#', $name)){ //test series
+                    array_push($series, $name);
                 }else{
-                    array_push($films, $files[$i]);
+                    array_push($movies, $name);//sinon film
                 }                
-            }else if (preg_match('#\.mp3$|\.flac$#', $files[$i])){
-                array_push($musics, $files[$i]);
+            }else if (preg_match($audioPattern, $name)){//test fichier audio
+                array_push($musics, $name);
             }else{
-                 array_push($others, $files[$i]);
+                 array_push($others, $name); //sinon autre
             }
         }     
         
-        $result = [$films, $series, $musics, $others];
+        $result = [$movies, $series, $musics, $others];
         
        for($i = 0; $i < count($result); $i++){
            $count = count($result[$i]);
@@ -61,5 +49,30 @@ class OrdererController extends AppController {
        }
         
         return $result;
+    }
+    
+    public function createSearchPattern($types){ //$types = ['format','format'...]
+        $pattern = '#';        
+        
+        foreach($types as $i=>$format){
+            $pattern = $pattern . $this->serializeFormat($format); 
+            
+            if($i != count($types)-1){
+              $pattern = $pattern  . "$|";
+            }            
+        }        
+        
+        $pattern = $pattern."$#";
+        
+        return $pattern;
+    }
+    
+    public function serializeFormat($format){
+        return "\.".$format;
+    }
+    
+    public function deletePath($path, $string){
+        $name =  str_replace($path."\\", "", $string);        
+        return $name;
     }
 }
