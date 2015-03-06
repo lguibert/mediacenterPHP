@@ -15,6 +15,7 @@ class AppController extends Controller {
     
     public function beforeFilter() {
         //$this->Auth->allow('add');
+        $this->set('addJs', false);  
     }
     
         
@@ -26,5 +27,15 @@ class AppController extends Controller {
         $file->close();
         
         return $json;
+    }
+    
+    public function updateSetting($setting, $type){
+        $dir = new Folder(WWW_ROOT . 'files');
+        $result = $dir->find('settings.json');            
+        $file = new File($dir->pwd() . DS . $result[0]);
+        $json = json_decode($file->read());     
+        array_push($json->$type, $setting);
+        $file->write(json_encode($json));
+        $file->close();
     }
 }

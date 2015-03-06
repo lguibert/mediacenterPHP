@@ -61,6 +61,7 @@
             <?= $this->Html->script('bootstrap.min');?>
             <?= $this->Html->script('header');?>
             <?= $this->Html->script('showHide');?>
+            <?php if($addJs) echo $this->Html->script('add'); ?>
         </div>
     </body>
 </html>

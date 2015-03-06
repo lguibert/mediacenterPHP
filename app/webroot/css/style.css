@@ -78,7 +78,15 @@ footer {
     width:16px;
 }
 
-.labelSettings{
+.formats strong{
     width:35px;
+    display:inline-block;
 }
 
+.formats{
+    margin:10px;
+}
+
+.validate, .submit{
+    display:inline-block;
+}
