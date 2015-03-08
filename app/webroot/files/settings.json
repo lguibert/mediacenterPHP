@@ -1,6 +1,6 @@
 {
     "dateOrdering": "05-03-2015 15:02:00",
-    "folders": ["L:\\Torrent"],
+    "folders": ["L:\\Torrent","L:\\Musique"],
     "videoFormats": ["mkv", "avi", "mp4"],
     "audioFormats": ["mp3", "flac"]
 }
