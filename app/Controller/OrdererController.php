@@ -18,7 +18,7 @@ class OrdererController extends AppController {
     public function openFolder(){
         $json = $this->getSettings();
         
-        $dir = new Folder($json->folder);
+        $dir = new Folder($json->folders[0]);
         $files = $dir->findRecursive();
         $movies = $series = $musics = $others = [];
         
@@ -26,7 +26,7 @@ class OrdererController extends AppController {
         $audioPattern = $this->createSearchPattern($json->audioFormats);
         
         for($i = 0; $i < count($files); $i++){
-            $name = $this->deletePath($json->folder, $files[$i]);
+            $name = $this->deletePath($json->folders[0], $files[$i]);
             if(preg_match($videosPattern, $name)){ //test fichier video
                 if(preg_match('#[Ss][0-9]{1,2}[Ee][0-9]{1,2}|[Ss]0[0-9]{1}|[Ss][0-9]{1,2} [EP][0-9]{1,2}#', $name)){ //test series
                     array_push($series, $name);

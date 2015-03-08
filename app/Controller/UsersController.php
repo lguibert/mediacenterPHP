@@ -15,7 +15,7 @@ class UsersController extends AppController{
         $json = $this->getSettings();
         
         $this->set(compact('json', $json));
-        $this->set('addJs', true);  
+        $this->set('settingsJs', true);  
             
         $this->render("settings");
     }
@@ -27,22 +27,48 @@ class UsersController extends AppController{
     public function updateSettings(){
         $this->autoRender = false;
         
-        if ($this->request->is('ajax')){
-            $newFormat = $this->request->query['newFormat'];
-            $type = $this->getTypeName($this->request->query['type']);
-            
-            if($newFormat != '' && $type != false){
-                $this->updateSetting($newFormat, $type);
+        if ($this->request->is('ajax')){            
+            $action = $this->request->query['action'];
+            switch($action):
+                case 'add':
+                    $this->addSetting($this->request);
+                    return false;
+                case 'delete':
+                    $this->deleteSetting($this->request);
+                    return false;
+                default:
+                    return false;
+            endswitch;
+        }
+    }
+    
+    public function addSetting($request){
+        $newFormat = $request->query['newFormat'];
+        $type = $this->getTypeName($request->query['type']);     
+        if($newFormat != '' && $type != false){
+            $formats = $this->getSetting($type);
+            if(!in_array($newFormat, $formats)){
+                $this->insertSetting($newFormat, $type);
+                $this->Session->setFlash("Ajout effectué", $key='success');
+            }else{
+                $this->Session->setFlash("<strong>".h($newFormat)."</strong> est déjà enregistré.", $key='error');
             }
-                  
         }else{
-            $newFormat = 'test';
-            //$type = $this->request->query['type'];
-            
-            $this->updateSetting($newFormat);
-            
-            return $this->redirect(array('controller' => 'users', 'action' => 'settings'));
-        }        
+            $this->Session->setFlash("Erreur dans les données envoyées.", $key='error');
+        }
+    }
+    
+    public function deleteSetting($request){
+        $type = $this->getTypeName($request->query['type']);
+        $val = $request->query['val'];
+        
+        $formats = $this->getSetting($type);
+        if(in_array($val, $formats)){
+            $this->unsetSetting($val, $type);
+            $this->Session->setFlash("Suprresion effectuée", $key='success');
+        }else{
+            $this->Session->setFlash("<strong>".$val."</strong> n'est pas valable.", $key='error');
+        }
     }
     
     public function getTypeName($type){
@@ -51,6 +77,8 @@ class UsersController extends AppController{
                 return 'videoFormats';
             case 'audio' :
                 return 'audioFormats';
+            case 'folder' :
+                return 'folders';
             default:
                 return false;
         endswitch;

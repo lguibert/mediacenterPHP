@@ -1,16 +1,37 @@
 <h1>Réglages</h1>
 
-<div class="container">
-    <form id='formSettings' action="<?= $this->Html->url(array('controller' => 'users', 'action' => 'updateSettings')) ?>" method="post">
-        <div>
-            <h2>Dernière date de rangement:</h2>
-            <input type="datetime" name="dateOrdering" value="<?= $json->dateOrdering;?>"/>
-        </div>
-        <div>
-            <h2>Dossier de recherche par défaut:</h2>
-            <input type="text" name="folder" value="<?= $json->folder;?>"/>
-        </div>
-        <div>
+<div class="container">    
+    <div>
+        <h2>Dernière date de rangement:</h2>
+        <p><?= $json->dateOrdering;?></p>
+    </div>
+    <div>
+        <form class="formSettings" id='formSettingsFolder' action="<?= $this->Html->url(array('controller' => 'users', 'action' => 'updateSettings')) ?>" method="post">
+            <h2>Dossiers de recherche par défaut:</h2>
+            <div id="containerFolders">                            
+                <ul>
+                    <?php 
+                        foreach($json->folders as $folder){
+                            ?>
+                            <li class="folders" id="<?= $folder; ?>" value="<?= $folder; ?>">
+                                <strong><?= $folder; ?></strong>   
+                                <?= $this->Html->image('delete.png', array('alt' => 'Supprimer','title' => 'Supprimer','class' => 'deleteSmall','value' => $folder, 'category' => 'folder'));?>
+                            </li>
+                        <?php }
+                    ?>
+                </ul>
+            </div>
+            <div class="addable">
+                <?= $this->Html->image('addFolder.png', array('alt' => 'Ajouter un dossier de recherche','title' => 'Ajouter un dossier de recherche','class' => 'add'));?>
+                <div class="form-addable">
+                    <input type="text" required name="newFolder" id="newFolder"/>
+                    <?= $this->Form->submit('Valider', array('type'=>'image','src' => 'app/webroot/img/ok.png', 'alt' => 'Valider','title' => 'Valider','class' => 'validate validateFormat', 'id' => 'validateVideoFormat', 'category' => 'folder'));  ?>
+                </div>
+            </div>        
+        </form>
+    </div>
+    <div>
+        <form class="formSettings" id='formSettingsVideo' action="<?= $this->Html->url(array('controller' => 'users', 'action' => 'updateSettings')) ?>" method="post">
             <h2>Formats vidéo pris en compte:</h2>
             <div id='containerVideoFormats'>
                 <ul>
@@ -19,7 +40,7 @@
                             ?>
                             <li class="formats" id="<?= $format; ?>" value="<?= $format; ?>">
                                 <strong><?= $format; ?></strong>   
-                                <?= $this->Html->image('delete.png', array('alt' => 'Supprimer','title' => 'Supprimer','class' => 'deleteSmall','value' => $format));?>
+                                <?= $this->Html->image('delete.png', array('alt' => 'Supprimer','title' => 'Supprimer','class' => 'deleteSmall','value' => $format, 'category' => 'video'));?>
                             </li>
                         <?php }
                     ?>
@@ -32,8 +53,10 @@
                     <?= $this->Form->submit('Valider', array('type'=>'image','src' => 'app/webroot/img/ok.png', 'alt' => 'Valider','title' => 'Valider','class' => 'validate validateFormat', 'id' => 'validateVideoFormat', 'category' => 'video'));  ?>
                 </div>
             </div>
-        </div>
-        <div>
+        </form>
+    </div>
+    <div>
+        <form class="formSettings" id='formSettingsAudio' action="<?= $this->Html->url(array('controller' => 'users', 'action' => 'updateSettings')) ?>" method="post">
             <h2>Formats audio pris en compte:</h2>
             <div id='containerAudioFormats'>
                 <ul>
@@ -42,7 +65,7 @@
                     ?>
                     <li class="formats" id="<?= $format; ?>" value="<?= $format; ?>">
                         <strong><?= $format; ?></strong>   
-                        <?= $this->Html->image('delete.png', array('alt' => 'Supprimer','title' => 'Supprimer','class' => 'deleteSmall','value' => $format));?>
+                        <?= $this->Html->image('delete.png', array('alt' => 'Supprimer','title' => 'Supprimer','class' => 'deleteSmall','value' => $format, 'category' => 'audio'));?>
                     </li>                    
                 <?php }
             ?>
@@ -51,10 +74,10 @@
             <div class="addable">
                 <?= $this->Html->image('addAudio.png', array('alt' => 'Ajouter un format audio','title' => 'Ajouter un format audio','class' => 'add'));?>
                 <div class="form-addable">
-                    <input type="text"/>
-                    <?= $this->Html->image('ok.png', array('alt' => 'Valider','title' => 'Valider','class' => 'validate'));?> 
+                    <input type="text" required name="newFolder" id="newFolder"/>
+                    <?= $this->Form->submit('Valider', array('type'=>'image','src' => 'app/webroot/img/ok.png', 'alt' => 'Valider','title' => 'Valider','class' => 'validate validateFormat', 'id' => 'validateVideoFormat', 'category' => 'audio'));  ?>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
