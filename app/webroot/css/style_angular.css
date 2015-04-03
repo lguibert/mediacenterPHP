@@ -1,0 +1,107 @@
+.message{
+    padding:15px;
+}
+
+html, body {
+    height: 100%;
+}
+
+h5{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.error{
+    color:red;
+}
+
+#wrap {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+ 
+#main {
+    overflow:auto;
+    padding-bottom: 50px;
+}
+ 
+footer {
+    position: relative;
+    clear:both;
+    height: 50px;
+    background-color: #333;
+    text-align: center;
+    color:white;
+    margin-top: 1px;
+}
+
+.files{
+    height:120px;
+    margin: 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+    border:dotted black 1px;
+}
+
+.files p{  
+    max-height:60px;
+}
+
+.clickable:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.contains{
+    display:none;
+}
+
+.addable img, .deletable img, .deleteSmall{
+    cursor: pointer;
+}
+
+.addable{
+    height: 40px;
+}
+
+.addable img.add{
+    width: 32px;
+    margin-right: 20px;
+}
+
+.form-addable{
+    width:210px;
+    display: inline-block;
+}
+
+.deleteSmall{
+    height:10px;
+    width:10px;
+    margin-left: 30px;
+    -webkit-transition: width 0.5s, height 0.5s; /* For Safari 3.1 to 6.0 */
+    transition: width 0.5s, height 0.5s;
+}
+
+.deleteSmall:hover{
+    height:16px;
+    width:16px;
+}
+
+.formats strong{
+    width:35px;
+    display:inline-block;
+}
+
+.formats{
+    margin:10px;
+}
+
+.validate, .submit{
+    display:inline-block;
+}
+
+.add:active{
+    border: solid rgba(166, 200, 255, 1) 2px;
+    border-radius: 3px;
+    padding: 2px;
+}

@@ -60,8 +60,6 @@
             <?= $this->Html->script('jquery.min');?>
             <?= $this->Html->script('bootstrap.min');?>
             <?= $this->Html->script('header');?>
-            <?= $this->Html->script('showHide');?>
-            <?php if($settingsJs){ echo $this->Html->script('settings');} ?>
         </div>
     </body>
 </html>

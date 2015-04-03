@@ -81,7 +81,8 @@ class OrdererController extends AppController {
     
     public function deletePath($paths, $string){           
         foreach($paths as $path){ 
-            if(!preg_match("#".$path."#", $string)){
+            $pathPattern = "#".$path."#";
+            if(preg_match($pathPattern, $string) !== false){
                 $string =  str_replace($path."\\", "", $string);   
             }
         }

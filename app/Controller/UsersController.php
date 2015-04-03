@@ -1,7 +1,7 @@
 <?php
 
-class UsersController extends AppController{   
-    public function login() {
+class UsersController extends AppController{
+    /*public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 return $this->redirect($this->Auth->redirectUrl());
@@ -10,58 +10,57 @@ class UsersController extends AppController{
             }
         }
     }
-    
+
     public function settings(){
         $json = $this->getSettings();
-        
+
         $this->set(compact('json', $json));
-        $this->set('settingsJs', true);  
-            
+        $this->set('settingsJs', true);
+
         $this->render("settings");
     }
 
     public function logout() {
         return $this->redirect($this->Auth->logout());
     }
+    */
     
-    public function updateSettings(){
-        $this->autoRender = false;
+    public function safeData($data){
+        $data = htmlspecialchars($data);
+        if(preg_match("/", $data)){
+            preg_replace("/", "\\\\", $data);
+        }       
         
-        if ($this->request->is('ajax')){            
-            $action = $this->request->query['action'];
-            switch($action):
-                case 'add':
-                    $this->addSetting($this->request);
-                    return false;
-                case 'delete':
-                    $this->deleteSetting($this->request);
-                    return false;
-                default:
-                    return false;
-            endswitch;
-        }
+        return $data;
     }
-    
-    public function addSetting($request){
-        $newFormat = $request->query['newFormat'];
-        $type = $this->getTypeName($request->query['type']);     
-        if($newFormat != '' && $type != false){
-            $formats = $this->getSetting($type);
+
+    public function settings(){
+        $this->autoRender = false;
+        print_r(json_encode($this->getSettings()));
+    }
+
+    public function addSetting($category, $newFormat){
+        $newFormat = $this->safeData($newFormat);
+        $category = $this->getTypeName($this->safeData($category));
+        if($newFormat != '' && $category != false){
+            $formats = $this->getSetting($category);
             if(!in_array($newFormat, $formats)){
-                $this->insertSetting($newFormat, $type);
-                $this->Session->setFlash("Ajout effectué", $key='success');
+                $this->insertSetting($newFormat, $category);
+                print_r("Ajout effectué.");
             }else{
-                $this->Session->setFlash("<strong>".h($newFormat)."</strong> est déjà enregistré.", $key='error');
+                $this->response->statusCode(406);
+                print_r("<strong>".h($newFormat)."</strong> est déjà enregistré.");
             }
         }else{
-            $this->Session->setFlash("Erreur dans les données envoyées.", $key='error');
+            $this->response->statusCode(406);                            
+            print_r("Erreur dans les données envoyées.");
         }
     }
-    
+
     public function deleteSetting($request){
         $type = $this->getTypeName($request->query['type']);
         $val = $request->query['val'];
-        
+
         $formats = $this->getSetting($type);
         if(in_array($val, $formats)){
             $this->unsetSetting($val, $type);
@@ -70,7 +69,7 @@ class UsersController extends AppController{
             $this->Session->setFlash("<strong>".$val."</strong> n'est pas valable.", $key='error');
         }
     }
-    
+
     public function getTypeName($type){
         switch($type):
             case 'video':
